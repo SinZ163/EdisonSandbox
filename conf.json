@@ -1,0 +1,8 @@
+{
+    "consumer_secret" : "INSERT HERE",
+    "consumer_key"    : "INSERT HERE",
+    "access_token"    : "INSERT HERE",
+    "access_key"      : "INSERT HERE",
+    
+    "weather_api"     : "INSERT HERE"
+}

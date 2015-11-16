@@ -18,15 +18,21 @@ from music import Music
 
 # Go to http://apps.twitter.com and create an app.
 # The consumer key and secret will be generated for you after
-consumer_key=""
-consumer_secret=""
+consumer_key = ""
+consumer_secret = ""
+access_token = ""
+access_token_secret = ""
+weather_api = ""
 
-# After the step above, you will be redirected to your app's page.
-# Create an access token under the the "Your access token" section
-access_token=""
-access_token_secret=""
-
-weather_api = "" #TODO: Config file
+with open("./conf.json", "r") as f:
+    info = json.read(f)
+    consumer_key = info["consumer_key"]
+    consumer_secret = info["consumer_secret"]
+    
+    access_token = info["access_token"]
+    access_token_secret = info["access_token_secret"]
+    
+    weather_api = info["weather_api"]
 
 reply_tweet = "@{name} It is currently {temp} degrees, {fact} and {sunset:.2f} hours until sunset"
 
