@@ -2,16 +2,19 @@
 
 from __future__ import absolute_import, print_function
 
+#Twitter API
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
 from tweepy import Stream
 from tweepy import API
 
+#Python API
 import json
 import time
-import mraa
+import mraa #Intel API
 import requests
 
+#My API
 from I2cLCDRGBBackLit import I2CLCDDisplay
 from TH02 import TH02
 from music import Music
@@ -25,7 +28,7 @@ access_token_secret = ""
 weather_api = ""
 
 with open("./conf.json", "r") as f:
-    info = json.read(f)
+    info = json.load(f)
     consumer_key = info["consumer_key"]
     consumer_secret = info["consumer_secret"]
     
@@ -72,13 +75,14 @@ class StdOutListener(StreamListener):
                                status=reply_tweet.format(
                                     temp = self.sensor.getTemperature(),
                                     name = data["user"]["screen_name"],
-                                    fact = 
-info["weather"][0]["description"],
+                                    fact = info["weather"][0]["description"],
+									#FutureTime - CurrentTime = Time until FutureTime. /60 to turn into minutes. /60 to turn into hours
                                     sunset = (int(info["sys"]["sunset"]) - int(time.time())) / 60.0 / 60.0
                                ),
                                in_reply_to_status_id = data["id"])
         time.sleep(5)
         
+		#If it is too fat to appear on the display, and if it barely fits, just show it, no harm. it wont run the next iteration.
         while(len(displayText) >= 16):
             self.display.LCDInstruction(0x80+0x28) #Row 2, Column 0x04
             self.display.LCDPrint(displayText[:16])
@@ -98,10 +102,4 @@ if __name__ == '__main__':
     api = API(auth)
     l = StdOutListener(api)
     stream = Stream(auth, l)
-    stream.filter(track=['#swinburne'])
-    
-    #api = API(auth)
-    #time.sleep(10)
-    
-    #sensor = TH02(bus=1)
-    #api.update_status(status="It is currently {0}° Degrees in TC303 #Swinburne".format(sensor.getTemperature()))
+    stream.filter(track=['#swinburne']) #Change this to #swinburneweather or something if you want to track something else!
